@@ -1,6 +1,6 @@
 # Kuberun
 
-How many time you had to run long running, resource exhausting command on Kubernetes pod and afterwards, it was killed by autoscaling/memory limit or deployment run by collabolator?
+How many time you had to run long running, resource exhausting command on Kubernetes pod and afterwards it was killed by autoscaling/memory limit or deployment made by someone?
 
 This CLI tool aims to create completely separate pod for those commands without having to manually code its configuration.
 
