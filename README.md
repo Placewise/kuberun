@@ -1,8 +1,8 @@
 # Kuberun
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kuberun`. To experiment with that code, run `bin/console` for an interactive prompt.
+How many time you had to run long running, resource exhausting command on Kubernetes pod and afterwards, it was killed by autoscaling/memory limit or deployment run by collabolator?
 
-TODO: Delete this and the text above, and describe your gem
+This CLI tool aims to create completely separate pod for those commands without having to manually code its configuration.
 
 ## Installation
 
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/kuberun. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Boostcom/kuberun. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
@@ -40,4 +40,4 @@ Everyone interacting in the Kuberun project’s codebases, issue trackers, chat 
 
 ## Copyright
 
-Copyright (c) 2018 kruczjak. See [MIT License](LICENSE.txt) for further details.
+Copyright (c) 2018 Boostcom. See [MIT License](LICENSE.txt) for further details.
