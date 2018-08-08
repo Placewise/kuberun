@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{CLI to run pods based on deployments}
   spec.description   = %q{CLI to run pods based on deployments}
-  spec.homepage      = "boostcom.no"
+  spec.homepage      = "https://boostcom.com"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
