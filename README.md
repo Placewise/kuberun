@@ -4,7 +4,13 @@ How many time you had to run long running, resource exhausting command on Kubern
 
 This CLI tool aims to create completely separate pod for those commands without having to manually code its configuration.
 
+Uses `kubectl` inside.
+
 ## Installation
+
+Dependencies:
+* Ruby >= 2.4
+* kubectl in `$PATH`
 
 Add this line to your application's Gemfile:
 
@@ -36,7 +42,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/Boostc
 
 ## Code of Conduct
 
-Everyone interacting in the Kuberun project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/kuberun/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Kuberun project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/Boostcom/kuberun/blob/master/CODE_OF_CONDUCT.md).
 
 ## Copyright
 
