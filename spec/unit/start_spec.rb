@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'kuberun/commands/start'
 
 RSpec.describe Kuberun::Commands::Start do
-  it "executes `start` command successfully" do
+  it 'executes `start` command successfully' do
     output = StringIO.new
     deployment_name = nil
     options = {}
