@@ -6,13 +6,17 @@ This CLI tool aims to create completely separate pod for those commands without 
 
 Uses `kubectl` inside.
 
+## Status
+
+This tool is in early alpha stage.
+
 ## Installation
 
 Dependencies:
 * Ruby >= 2.4
 * kubectl in `$PATH`
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile (preferably in `development` group):
 
 ```ruby
 gem 'kuberun'
@@ -28,7 +32,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+kuberun help
+```
 
 ## Development
 
