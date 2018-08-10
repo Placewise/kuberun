@@ -8,16 +8,22 @@ module Kuberun
   #
   # @api public
   class CLI < Thor
-    class_option :'certificate-authority', type: :string, default: '', desc: 'See kubectl options'
-    class_option :'client-certificate', type: :string, default: '', desc: 'See kubectl options'
-    class_option :'client-key', type: :string, default: '', desc: 'See kubectl options'
-    class_option :cluster, type: :string, default: '', desc: 'See kubectl options'
-    class_option :context, type: :string, default: '', desc: 'See kubectl options'
-    class_option :'insecure-skip-tls-verify', type: :string, default: '', desc: 'See kubectl options'
-    class_option :kubeconfig, type: :string, default: '', desc: 'See kubectl options'
-    class_option :namespace, type: :string, default: '', desc: 'See kubectl options', aliases: :'-n'
-    class_option :token, type: :string, default: '', desc: 'See kubectl options'
-    class_option :v, type: :numeric, default: 0, desc: 'Log level, also passed to kubectl'
+    DEFAULT_OPTIONS_FOR_KUBECTL_OPTIONS = { type: :string, default: '', desc: 'See kubectl options' }
+    BASE_KUBECTL_OPTIONS = {
+      'certificate-authority': {},
+      'client-certificate': {},
+      'client-key': {},
+      'cluster': {},
+      'context': {},
+      'insecure-skip-tls-verify': {},
+      'kubeconfig': {},
+      'namespace': { aliases: :'-n' },
+      'token': {},
+      'v': { type: :numeric, default: 0, desc: 'Log level, also passed to kubectl' },
+    }
+    BASE_KUBECTL_OPTIONS.each do |option_name, hash|
+      class_option option_name, DEFAULT_OPTIONS_FOR_KUBECTL_OPTIONS.merge(hash)
+    end
 
     # Error raised by this runner
     Error = Class.new(StandardError)
@@ -29,15 +35,15 @@ module Kuberun
     end
     map %w[--version -v] => :version
 
-    desc 'start DEPLOYMENT-NAME', 'Starts pod for command'
+    desc 'run_pod DEPLOYMENT_NAME', 'Starts pod for command'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
-    def start(deployment_name)
+    def run_pod(deployment_name)
       if options[:help]
-        invoke :help, ['start']
+        invoke :help, ['run_pod']
       else
-        require_relative 'commands/start'
-        Kuberun::Commands::Start.new(deployment_name, options).execute
+        require_relative 'commands/run_pod'
+        Kuberun::Commands::RunPod.new(deployment_name, options).execute
       end
     end
   end

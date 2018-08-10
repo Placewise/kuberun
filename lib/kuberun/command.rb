@@ -8,6 +8,10 @@ module Kuberun
 
     def_delegators :command, :run
 
+    def initialize(options)
+      Kuberun::Kubectl.load_options(options)
+    end
+
     # Execute this command
     #
     # @api public
