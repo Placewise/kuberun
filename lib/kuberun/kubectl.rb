@@ -11,6 +11,7 @@ class Kubectl
   KUBECTL_OPTIONS = Kuberun::CLI::BASE_KUBECTL_OPTIONS.keys.map(&:to_s)
 
   def load_options(options)
+    self.options = options
     self.kubectl_options = parsed_options(options)
   end
 
@@ -45,9 +46,10 @@ class Kubectl
 
   private
 
-  attr_accessor :kubectl_options
+  attr_accessor :kubectl_options, :options
 
   def cmd(tty_options = {})
+    tty_options[:printer] = :progress unless options['debug']
     TTY::Command.new(tty_options)
   end
 

@@ -8,7 +8,7 @@ module Kuberun
   #
   # @api public
   class CLI < Thor
-    DEFAULT_OPTIONS_FOR_KUBECTL_OPTIONS = { type: :string, default: '', desc: 'See kubectl options' }
+    DEFAULT_OPTIONS_FOR_KUBECTL_OPTIONS = { type: :string, default: '', desc: 'See kubectl options' }.freeze
     BASE_KUBECTL_OPTIONS = {
       'certificate-authority': {},
       'client-certificate': {},
@@ -19,11 +19,12 @@ module Kuberun
       'kubeconfig': {},
       'namespace': { aliases: :'-n' },
       'token': {},
-      'v': { type: :numeric, default: 0, desc: 'Log level, also passed to kubectl' },
-    }
+      'v': { type: :numeric, default: 0, desc: 'Log level passed to kubectl' }
+    }.freeze
     BASE_KUBECTL_OPTIONS.each do |option_name, hash|
       class_option option_name, DEFAULT_OPTIONS_FOR_KUBECTL_OPTIONS.merge(hash)
     end
+    class_option :debug, type: :boolean, default: false, desc: 'Debug logging'
 
     # Error raised by this runner
     Error = Class.new(StandardError)

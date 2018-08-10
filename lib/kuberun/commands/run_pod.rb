@@ -38,8 +38,9 @@ module Kuberun
 
         execute_command(input, output)
 
-        unless prompt.no?('Should I delete pod?')
+        unless prompt.no?(Kuberun::Pastel.yellow('Should I delete pod?'))
           Kuberun::Kubectl.delete(resource: 'pod', resource_name: generated_pod_name)
+          Kuberun::Pastel.green("Pod #{generated_pod_name} has been deleted!")
         end
 
         output.puts(Kuberun::Pastel.green('Done!'))
