@@ -10,6 +10,18 @@ Uses `kubectl` inside.
 
 This tool is in early alpha stage.
 
+## Features
+
+* Run pod based on deployment spec
+* Possibility to auto-delete pod after command is done
+* Search for applicable pods before starting new one
+
+Incoming:
+
+* specify different `resources` for containers
+* specify your own command to keep pod running (instead of /bin/sh and sleep)
+* specify actual command (currently it's `/bin/sh`)
+
 ## Installation
 
 Dependencies:
