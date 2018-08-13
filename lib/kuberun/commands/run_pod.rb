@@ -73,9 +73,15 @@ module Kuberun
           'kuberun-source' => @deployment_name,
         }
 
-        pod_template['spec']['containers'][0].delete('livenessProbe')
-        pod_template['spec']['containers'][0].delete('readinessProbe')
+        pod_template['spec']['containers'].each do |container|
+          container.delete('livenessProbe')
+          container.delete('readinessProbe')
+          container['command'] = %w[/bin/sh -c --]
+          container['args'] = ['while true; do sleep 1000; done']
+        end
+
         pod_template['spec'].delete('affinity')
+        pod_template['spec']['terminationGracePeriodSeconds'] = 0
       end
 
       def wait_while
