@@ -49,7 +49,7 @@ module Kuberun
       private
 
       def create_pod_from_deployment(output)
-        deployment = Kuberun::Kubectl.get(resource: 'deployment', resource_name: @deployment_name, options: '--export')
+        deployment = Kuberun::Kubectl.get(resource: 'deployment', resource_name: @deployment_name, options: '')
         pod_template = deployment['spec']['template']
         prepare_pod_template(pod_template)
 
