@@ -80,7 +80,26 @@ module Kuberun
           container['args'] = ['while true; do sleep 1000; done']
         end
 
-        pod_template['spec'].delete('affinity')
+        pod_template['spec'].delete('priority')
+        pod_template['spec']['priorityClassName'] = 'system-cluster-critical'
+        pod_template['spec']['affinity'] = {
+          'podAntiAffinity' => {
+            'requiredDuringSchedulingIgnoredDuringExecution' => [
+              {
+                'labelSelector' => {
+                  'matchExpressions' => [
+                    {
+                      'key' => 'spot',
+                      'operator' => 'In',
+                      'values' => ['true']
+                    }
+                  ]
+                },
+                'topologyKey' => 'kubernetes.io/hostname',
+              }
+            ]
+          }
+        }
         pod_template['spec']['terminationGracePeriodSeconds'] = 0
       end
 
