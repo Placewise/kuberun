@@ -50,7 +50,7 @@ class Kubectl
 
   def cmd(tty_options = {})
     tty_options[:printer] = :progress unless options['debug']
-    TTY::Command.new(tty_options)
+    TTY::Command.new(**tty_options)
   end
 
   def kubectl_base_input_command(verb, configuration:, options:)

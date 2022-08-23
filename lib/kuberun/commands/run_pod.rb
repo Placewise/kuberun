@@ -38,7 +38,7 @@ module Kuberun
 
         execute_command(input, output)
 
-        unless prompt.no?(Kuberun::Pastel.yellow('Should I delete pod?'))
+        if prompt.yes?(Kuberun::Pastel.yellow('Should I delete pod?'))
           Kuberun::Kubectl.delete(resource: 'pod', resource_name: generated_pod_name)
           Kuberun::Pastel.green("Pod #{generated_pod_name} has been deleted!")
         end
@@ -122,7 +122,7 @@ module Kuberun
       def execute_command(_input, output)
         output.puts(Kuberun::Pastel.green('Executing command'))
 
-        Kuberun::Kubectl.exec(pod: generated_pod_name, command: '-it /bin/sh')
+        Kuberun::Kubectl.exec(pod: generated_pod_name, command: '-it -- /bin/bash')
 
         output.puts(Kuberun::Pastel.green('Kubectl exec exited'))
       end
