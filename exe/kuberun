@@ -3,8 +3,9 @@
 
 lib_path = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
-require 'kuberun/cli'
 require 'kuberun'
+require 'kuberun/cli'
+
 
 Signal.trap('INT') do
   warn("\n#{caller.join("\n")}: interrupted")

@@ -8,7 +8,27 @@ require 'kuberun/kubectl/exec'
 # Handles running kubectl
 class Kubectl
   CAT_MULTILINE = 'EOFCONFIG'
-  KUBECTL_OPTIONS = Kuberun::CLI::BASE_KUBECTL_OPTIONS.keys.map(&:to_s)
+
+  KUBECTL_OPTIONS = {
+    'certificate-authority': {},
+    'client-certificate': {},
+    'client-key': {},
+    'cluster': {},
+    'context': {},
+    'insecure-skip-tls-verify': {},
+    'kubeconfig': {},
+    'namespace': { aliases: :'-n' },
+    'token': {},
+    'v': { type: :numeric, default: 0, desc: 'Log level passed to kubectl' },
+  }.freeze
+  SCRIPT_OPTIONS = {
+    'cluster-command': { type: 'string', default: '/bin/bash', desc: 'Command to run on cluster' },
+    'use-first-pod': { type: 'boolean', default: false, desc: 'Should first existing pod be used automatically?' },
+    'cleanup-pod': { type: 'boolean', default: false, desc: 'Should pod be removed after finishing?' },
+    'perform-auth-check': { type: 'boolean', default: true, desc: 'Should auth check be performed?' },
+    'pty': { type: 'boolean', default: true, desc: 'Should PTY be used?' },
+  }.freeze
+  OPTIONS = KUBECTL_OPTIONS.merge(SCRIPT_OPTIONS).freeze
 
   def load_options(options)
     self.options = options
@@ -30,8 +50,8 @@ class Kubectl
     cmd.run(kubectl_base_input_command('create', configuration: configuration, options: options))
   end
 
-  def exec(pod:, command:)
-    Kubectl::Exec.new(self).exec(pod: pod, command: command)
+  def exec(pod, options = {})
+    Kubectl::Exec.new(self).exec(pod, options)
   end
 
   def delete(resource:, resource_name:)
@@ -63,7 +83,7 @@ class Kubectl
 
   def parsed_options(options)
     options.each_with_object([]) do |(option_name, option_value), arr|
-      next if !KUBECTL_OPTIONS.include?(option_name) || option_value == ''
+      next if !KUBECTL_OPTIONS.keys.map(&:to_s).include?(option_name) || option_value == ''
 
       arr << "--#{option_name}=#{option_value}"
     end.join(' ')

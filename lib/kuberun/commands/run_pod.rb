@@ -14,23 +14,29 @@ module Kuberun
       end
 
       def execute(input: $stdin, output: $stdout)
-        output.puts(Kuberun::Pastel.yellow('Checking access to needed commands...'))
-        Kuberun::Kubectl.auth_check('create', resource: 'pods')
-        Kuberun::Kubectl.auth_check('exec', resource: 'pods')
-        output.puts(Kuberun::Pastel.green('You have all permissions needed.'))
+        if @options['perform-auth-check']
+          output.puts(Kuberun::Pastel.yellow('Checking access to needed commands...'))
+          Kuberun::Kubectl.auth_check('create', resource: 'pods')
+          Kuberun::Kubectl.auth_check('exec', resource: 'pods')
+          output.puts(Kuberun::Pastel.green('You have all permissions needed.'))
+        end
 
         output.puts(Kuberun::Pastel.yellow('Searching for existing pods'))
         existing_pods = Kuberun::Kubectl.get(resource: 'pods', options: "-l kuberun-provisioned=true,kuberun-source=#{@deployment_name}")
         if existing_pods['items'].size > 0
-          select = existing_pods['items'].map { |item| item.dig('metadata', 'name') }
-          select << NEW_POD
-
-          selection = prompt.select('I found some already running pods. Do you want to use one?', select)
-
-          if selection == NEW_POD
-            create_pod_from_deployment(output)
+          if @options['use-first-pod']
+            @generated_pod_name = existing_pods['items'].first.dig('metadata', 'name')
           else
-            @generated_pod_name = selection
+            select = existing_pods['items'].map { |item| item.dig('metadata', 'name') }
+            select << NEW_POD
+
+            selection = prompt.select('I found some already running pods. Do you want to use one?', select)
+
+            if selection == NEW_POD
+              create_pod_from_deployment(output)
+            else
+              @generated_pod_name = selection
+            end
           end
         else
           create_pod_from_deployment(output)
@@ -38,7 +44,7 @@ module Kuberun
 
         execute_command(input, output)
 
-        if prompt.yes?(Kuberun::Pastel.yellow('Should I delete pod?'))
+        if @options['cleanup-pod'] || prompt.yes?(Kuberun::Pastel.yellow('Should I delete pod?'))
           Kuberun::Kubectl.delete(resource: 'pod', resource_name: generated_pod_name)
           Kuberun::Pastel.green("Pod #{generated_pod_name} has been deleted!")
         end
@@ -122,7 +128,7 @@ module Kuberun
       def execute_command(_input, output)
         output.puts(Kuberun::Pastel.green('Executing command'))
 
-        Kuberun::Kubectl.exec(pod: generated_pod_name, command: '-it -- /bin/bash')
+        Kuberun::Kubectl.exec(generated_pod_name, @options)
 
         output.puts(Kuberun::Pastel.green('Kubectl exec exited'))
       end
