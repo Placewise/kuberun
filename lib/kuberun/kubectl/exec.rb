@@ -14,11 +14,16 @@ class Kubectl
       @kubectl = kubectl
     end
 
-    def exec(pod:, command:)
-      old_state = `stty -g`
+    def exec(pod, options)
+      command = "#{kubectl_base_command('exec', resource: pod)} -it -- #{options['cluster-command']}"
 
-      PTY.spawn("#{kubectl_base_command('exec', resource: pod)} #{command}") do |out, inp, pid|
-        pty_process(out, inp, pid, old_state)
+      if options['pty']
+        old_state = `stty -g`
+        PTY.spawn(command) do |out, inp, pid|
+          pty_process(out, inp, pid, old_state)
+        end
+      else
+        system(command)
       end
     end
 
