@@ -32,6 +32,8 @@ module Kuberun
             select = existing_pods['items'].map { |item| item.dig('metadata', 'name') }
             select << NEW_POD
 
+            output.puts
+            output.puts
             selection = prompt.select('I found some already running pods. Do you want to use one?', select)
 
             if selection == NEW_POD
