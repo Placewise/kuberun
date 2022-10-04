@@ -15,13 +15,15 @@ module Kuberun
 
       def execute(input: $stdin, output: $stdout)
         if @options['perform-auth-check']
-          output.puts(Kuberun::Pastel.yellow('Checking access to needed commands...'))
+          output.print(Kuberun::Pastel.yellow('Checking access to needed commands'))
           Kuberun::Kubectl.auth_check('create', resource: 'pods')
           Kuberun::Kubectl.auth_check('exec', resource: 'pods')
-          output.puts(Kuberun::Pastel.green('You have all permissions needed.'))
+
+          output.puts
+          output.puts(Kuberun::Pastel.green('You have all permissions needed'))
         end
 
-        output.puts(Kuberun::Pastel.yellow('Searching for existing pods'))
+        output.print(Kuberun::Pastel.yellow('Searching for existing pods'))
         existing_pods = Kuberun::Kubectl.get(resource: 'pods', options: "-l kuberun-provisioned=true,kuberun-source=#{@deployment_name}")
         if existing_pods['items'].size > 0
           if @options['use-first-pod']
@@ -49,7 +51,7 @@ module Kuberun
           Kuberun::Pastel.green("Pod #{generated_pod_name} has been deleted!")
         end
 
-        output.puts(Kuberun::Pastel.green('Done!'))
+        output.puts
       end
 
       private
@@ -65,6 +67,7 @@ module Kuberun
           pod.dig('status', 'phase') == 'Running'
         end
 
+        output.puts
         output.puts(Kuberun::Pastel.green('Pod is running!'))
       end
 

@@ -26,7 +26,7 @@ class Kubectl
     'use-first-pod': { type: 'boolean', default: false, desc: 'Should first existing pod be used automatically?' },
     'cleanup-pod': { type: 'boolean', default: false, desc: 'Should pod be removed after finishing?' },
     'perform-auth-check': { type: 'boolean', default: true, desc: 'Should auth check be performed?' },
-    'pty': { type: 'boolean', default: true, desc: 'Should PTY be used?' },
+    'pty': { type: 'boolean', default: false, desc: 'Should PTY be used?' },
   }.freeze
   OPTIONS = KUBECTL_OPTIONS.merge(SCRIPT_OPTIONS).freeze
 
