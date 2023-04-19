@@ -85,12 +85,7 @@ module Kuberun
         }
 
         pod_template['spec']['containers'].each do |container|
-          if container['securityContext']
-            %w[readOnlyRootFilesystem runAsNonRoot runAsUser runAsGroup].each do |field|
-              container['securityContext'].delete(field)
-            end
-          end
-
+          container.delete('securityContext')
           container.delete('livenessProbe')
           container.delete('readinessProbe')
           container['command'] = %w[/bin/sh -c --]
