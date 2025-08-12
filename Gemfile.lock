@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kuberun (0.5.0)
+    kuberun (0.5.1)
       pastel
       thor
       tty-command

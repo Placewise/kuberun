@@ -88,6 +88,7 @@ module Kuberun
           container.delete('securityContext')
           container.delete('livenessProbe')
           container.delete('readinessProbe')
+          container.delete('lifecycle')
           container['command'] = %w[/bin/sh -c --]
           container['args'] = ['while true; do sleep 1000; done']
         end
